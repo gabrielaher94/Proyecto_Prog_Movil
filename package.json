@@ -1,0 +1,26 @@
+{
+  "name": "proyectoclass_pm",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrielaher94/Proyecto_Prog_Movil.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gabrielaher94/Proyecto_Prog_Movil/issues"
+  },
+  "homepage": "https://github.com/gabrielaher94/Proyecto_Prog_Movil#readme",
+  "description": "",
+  "devDependencies": {
+    "@react-native-community/cli": "^19.1.1"
+  },
+  "dependencies": {
+    "react-native": "^0.80.2"
+  }
+}
