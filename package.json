@@ -21,6 +21,8 @@
     "@react-native-community/cli": "^19.1.1"
   },
   "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "react-native": "^0.80.2"
   }
 }
