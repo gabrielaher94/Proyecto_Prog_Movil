@@ -9,16 +9,17 @@ type Props={
 }
 //componentes con props
 export default function CustomButton({title, onPress, variant ='primary'}:Props){
+    const styles =getStyles(variant);
     return(
-    <TouchableOpacity onPress={onPress}>
-        <Text>{title} </Text>
+    <TouchableOpacity onPress={onPress} style={styles.button} >
+        <Text style={styles.text}>{title} </Text>
     </TouchableOpacity>
   );
 }
 //funcion con parametros para generar estilo
 const getStyles =(variant:'primary' |'secondary' | 'tertiary')=>{
 
-    StyleSheet.create({
+    return StyleSheet.create({
         button:{
             padding: 12,
             margin: 10,
