@@ -6,21 +6,21 @@ import { useState } from "react";
 export default function Login (){
 
     const [email, setemail] = useState("")
+    const [password, setPassword] = useState("")
     return(
         <View>
-        <CustomButton title="Iniciar Sesion"
-        onPress={()=>{}}/>
         <CustomInput title = "Email"
         value={email}
         type="email"
         onChange={setemail}/>
-        
+        <CustomInput title = "Password"
+        value={password}
+        type="password"
+        onChange={setPassword}/>
+        <CustomButton title="Iniciar Sesion"
+        onPress={()=>{}}/>
         <CustomButton title= "Registrarme" 
         onPress ={()=>{}}variant={'secondary'}/>
-        <CustomInput title = "Registra tu email"
-        value="" 
-        type="email"
-        onChange={()=>{}}/>
         <CustomButton title= "Cambiar contraseña" 
         onPress ={()=>{}}variant={'tertiary'}/>
         </View>

@@ -1,7 +1,7 @@
 import React from "react";
-import {Text, View,TextInput,StyleSheet, KeyboardTypeOptions} from "react-native";
-
-//import Icon from "react-native-vector-icons/FontAwesome";
+import {Text, View,TextInput,StyleSheet, KeyboardTypeOptions, TouchableOpacity} from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import { useState } from "react";
 
 
 type Props = {
@@ -17,16 +17,21 @@ export default function CustomInput({value, type ='text', onChange, title ,requi
    
 
     const isPasswordField = type === 'password';
+    //Estado alterno para visualizar la contraseña
+    const [showPassword, setPassword]=useState(false);
     
-    const keyboardType : KeyboardTypeOptions = type === 'email' ? 'email-address' : type === 'number' ? 'number-pad' : type === 'numeric' ? 'numeric' : 'default';
-    
-    
-    
-    'default';
+    const keyboardType : KeyboardTypeOptions = 
+    type === 'email' 
+    ? 'email-address' 
+    : type === 'number' 
+    ? 'number-pad' 
+    : type === 'numeric' 
+    ? 'numeric' 
+    : 'default';
     const getError =()=>{
         if( required! && value) return "Este campo es obligatorio";
         if(type === 'email' && value.includes('@')) return "El correo no es valido";
-        if(type === 'password' && value.length < 4) return "La contraseña debe tener al menos 6 caracteres";
+        if(type === 'password' && value.length < 6) return "La contraseña debe tener al menos 6 caracteres";
     }
     const error = getError();
    
@@ -35,16 +40,17 @@ export default function CustomInput({value, type ='text', onChange, title ,requi
             
             <TextInput
             style={[styles.input, error ? styles.inputError : null]}
+            
             placeholder={title}
             value={value}
             onChangeText={onChange}
-            secureTextEntry={type === 'password'}
+            secureTextEntry={isPasswordField && !showPassword}
             keyboardType={keyboardType}
             
             />
-            <Text style={styles.error}>{error}</Text>
-            {/*isPasswordField && <Icon name="lock" size={20} color="#000" />*/}
             
+            {isPasswordField &&( <TouchableOpacity onPress={()=>setPassword(!showPassword)}><Icon name={showPassword?"visibility":"visibility-off" } size={30} color="#000" /></TouchableOpacity>)}
+           { error&& <Text style={styles.error}>{error}</Text>}
         </View>
     );
     
