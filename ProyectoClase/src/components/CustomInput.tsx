@@ -18,7 +18,7 @@ export default function CustomInput({value, type ='text', onChange, title ,requi
 
     const isPasswordField = type === 'password';
     //Estado alterno para visualizar la contraseña
-    const [showPassword, setPassword]=useState(false);
+    const [isPasswordVisible, setPasswordVisible]=useState(false);
     
     const keyboardType : KeyboardTypeOptions = 
     type === 'email' 
@@ -29,31 +29,35 @@ export default function CustomInput({value, type ='text', onChange, title ,requi
     ? 'numeric' 
     : 'default';
     const getError =()=>{
-        if( required! && value) return "Este campo es obligatorio";
-        if(type === 'email' && value.includes('@')) return "El correo no es valido";
-        if(type === 'password' && value.length < 6) return "La contraseña debe tener al menos 6 caracteres";
+        if( required && !value) return "Este campo es obligatorio";
+        if(type === 'email'&& value && value.includes('@')) return "El correo no es valido";
+        if(type === 'password' &&value&& value.length < 6) return "La contraseña debe tener al menos 6 caracteres";
     }
     const error = getError();
    
     return (
         <View style={styles.inputContainer}>
-            
+            <View style={[styles.input, error ? styles.inputError : null]}/>
             <TextInput
-            style={[styles.input, error ? styles.inputError : null]}
-            
+            style={styles.input}
             placeholder={title}
             value={value}
             onChangeText={onChange}
-            secureTextEntry={isPasswordField && !showPassword}
+            secureTextEntry={isPasswordField && !isPasswordVisible}
             keyboardType={keyboardType}
             
             />
             
-            {isPasswordField &&( <TouchableOpacity onPress={()=>setPassword(!showPassword)}><Icon name={showPassword?"visibility":"visibility-off" } size={30} color="#000" /></TouchableOpacity>)}
+            {isPasswordField &&( <TouchableOpacity onPress={()=>setPasswordVisible(!isPasswordVisible)}>
+                <Icon
+                 name={isPasswordVisible?"visibility-off":"visibility" } 
+                 size={24} 
+                 color="#888" />
+                 </TouchableOpacity>)}
+                 
            { error&& <Text style={styles.error}>{error}</Text>}
         </View>
     );
-    
 }
 
 const styles = StyleSheet.create({
