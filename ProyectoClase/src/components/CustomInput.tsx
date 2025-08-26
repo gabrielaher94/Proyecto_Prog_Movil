@@ -63,7 +63,8 @@ export default function CustomInput({value, type ='text', onChange, title ,requi
 const styles = StyleSheet.create({
     input: {
         flex: 1,
-        paddingVertical: 15,
+        paddingVertical: 10,
+        textAlign: 'left',
         fontSize: 15,
         color: 'black',
         
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         flexDirection: 'row',
-        alignItems: 'baseline',
+        alignItems: 'flex-start',
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 5,

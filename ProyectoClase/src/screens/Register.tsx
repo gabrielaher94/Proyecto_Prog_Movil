@@ -34,14 +34,14 @@ const handleLogin = () =>{
         <View style={styles.container}>
             <View style={styles.item}>
                 <CustomInput 
-                    title="Ingrese su correo de usuario"
+                    title="Email"
                     value={email}
                     type="email"
                     onChange={handleOnChangeEmail}
                 />
 
                 <CustomInput 
-                    title="Ingrese su contraseña de usuario"
+                    title="Password"
                     value={password}
                     type="password"
                     onChange={handleOnChangePassword}
@@ -63,6 +63,6 @@ const styles = StyleSheet.create({
         padding: 15,
     },
     item: {
-        marginVertical: 2, // separa cada input/botón
+        marginVertical: 10, // separa cada input/botón
     },
 })

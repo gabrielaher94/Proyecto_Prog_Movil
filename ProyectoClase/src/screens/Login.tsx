@@ -37,14 +37,14 @@ export default function Login({ navigation }: any) {
     <View style={styles.container}>
       <View style={styles.item}>
         <CustomInput
-          title="Ingrese su correo"
+          title="Email"
           value={email}
           type="email"
           onChange={handleOnChangeEmail}
         />
 
         <CustomInput
-          title="Ingrese su contraseña"
+          title="Password"
           value={password}
           type="password"
           onChange={handleOnChangePassword}
@@ -57,7 +57,7 @@ export default function Login({ navigation }: any) {
 
       <View style={styles.item}>
         <CustomButton
-          title="Registrarme"
+          title="Registrar"
           onPress={handleRegister}
           variant="secondary"
         />
