@@ -3,18 +3,18 @@ import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
 import { useState } from "react";
 
-export default function Registro({navigation}: any) {
+export default function Register({navigation}: any) {
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
     
 
-    const handleOnChangeEmail = (email: string) => {
-        setemail(email);
+    const handleOnChangeEmail = (emai: string) => {
+        setemail(emai);
         
     }
 
-    const handleOnChangePassword = (password: string) => {
-        setpassword(password);
+    const handleOnChangePassword = (pass: string) => {
+        setpassword(pass);
         
     }
 const handleLogin = () =>{
@@ -34,14 +34,14 @@ const handleLogin = () =>{
         <View style={styles.container}>
             <View style={styles.item}>
                 <CustomInput 
-                    title="Escriba su correo de usuario"
+                    title="Ingrese su correo de usuario"
                     value={email}
                     type="email"
                     onChange={handleOnChangeEmail}
                 />
 
                 <CustomInput 
-                    title="Escriba su contraseña de usuario"
+                    title="Ingrese su contraseña de usuario"
                     value={password}
                     type="password"
                     onChange={handleOnChangePassword}
@@ -50,23 +50,17 @@ const handleLogin = () =>{
 
             <View style={styles.item}>
                 <CustomButton 
-                    title="Registrarse"
+                    title="Register"
                     onPress={handleLogin}
                 />
-            </View>
-
-            
-
-          
-
-          
+            </View> 
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        padding: 10,
+        padding: 15,
     },
     item: {
         marginVertical: 2, // separa cada input/botón

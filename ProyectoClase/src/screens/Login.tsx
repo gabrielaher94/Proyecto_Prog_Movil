@@ -15,9 +15,9 @@ export default function Login({ navigation }: any) {
     setPassword(text);
   };
 
-  const handleRegistro = () => {
+  const handleRegister = () => {
     
-      navigation.navigate("RegistroScreen");
+      navigation.navigate("RegisterScreen");
    
   };
 
@@ -37,14 +37,14 @@ export default function Login({ navigation }: any) {
     <View style={styles.container}>
       <View style={styles.item}>
         <CustomInput
-          title="Escriba su correo"
+          title="Ingrese su correo"
           value={email}
           type="email"
           onChange={handleOnChangeEmail}
         />
 
         <CustomInput
-          title="Escriba su contraseña"
+          title="Ingrese su contraseña"
           value={password}
           type="password"
           onChange={handleOnChangePassword}
@@ -58,7 +58,7 @@ export default function Login({ navigation }: any) {
       <View style={styles.item}>
         <CustomButton
           title="Registrarme"
-          onPress={handleRegistro}
+          onPress={handleRegister}
           variant="secondary"
         />
       </View>
