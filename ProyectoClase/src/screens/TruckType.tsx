@@ -17,6 +17,7 @@ type TruckTypeProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "TruckType">;
 };
 
+export default function TruckType ({navigation}:TruckTypeProps){
 const TruckType = ({navigation}: TruckTypeProps)=>{
 const [name, setname] =useState('');
 const [licence, setlicence ] =useState('');
@@ -25,4 +26,5 @@ const [placa, setplaca]=useState('');
 const[peso, setpeso]=useState('');
 
 
+};
 }

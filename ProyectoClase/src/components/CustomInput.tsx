@@ -6,7 +6,7 @@ import { useState } from "react";
 
 type Props = {
     value : string;
-    type? : 'text' | 'password' | 'email'|'number'| 'numeric';
+    type? :'name' | 'id' |'gender' |'phone' |'text' | 'password' | 'email'|'number'| 'numeric';
     onChange: (text:string) => void;
     required?: boolean;
     title: string;
@@ -30,8 +30,10 @@ export default function CustomInput({value, type ='text', onChange, title ,requi
     : 'default';
     const getError =()=>{
         if( required && !value) return "Este campo es obligatorio";
-        if(type === 'email'&& value && value.includes('@')) return "El correo no es valido";
-        if(type === 'password' &&value&& value.length < 6) return "La contraseña debe tener al menos 6 caracteres";
+        if(type === 'email'&& value && !value.includes('@')) 
+            return "El correo no es valido";
+        if(type === 'password' &&value&& value.length < 6) 
+            return "La contraseña debe tener al menos 6 caracteres";
     }
     const error = getError();
    

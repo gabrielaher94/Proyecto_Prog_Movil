@@ -4,9 +4,28 @@ import CustomInput from "../components/CustomInput";
 import { useState } from "react";
 
 export default function Register({navigation}: any) {
+    const[name, setname]=useState("");
+    const[id, setid]= useState("");
+    const[phone, setphone]= useState("");
+    const[gender, setgender]= useState("");
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
     
+const handleOnchangeName = (name: string)=>{
+    setname(name);
+}
+
+const handleOnchangeID = (id: string)=>{
+    setid(id);
+}
+
+const handleOnchangePhone = (phone: string)=>{
+    setphone(phone);
+}
+
+const handleOnchangeGender = (gender: string)=>{
+    setgender(gender);
+}
 
     const handleOnChangeEmail = (emai: string) => {
         setemail(emai);
@@ -33,6 +52,30 @@ const handleLogin = () =>{
         
         <View style={styles.container}>
             <View style={styles.item}>
+                <CustomInput 
+                    title="Name"
+                    value={name}
+                    type="name"
+                    onChange={handleOnchangeName}
+                />
+                <CustomInput 
+                    title="ID"
+                    value={id}
+                    type="id"
+                    onChange={handleOnchangeID}
+                />
+                <CustomInput 
+                    title="Phone"
+                    value={phone}
+                    type="phone"
+                    onChange={handleOnchangePhone}
+                />
+                <CustomInput 
+                    title="Gender"
+                    value={gender}
+                    type="gender"
+                    onChange={handleOnchangeGender}
+                />
                 <CustomInput 
                     title="Email"
                     value={email}

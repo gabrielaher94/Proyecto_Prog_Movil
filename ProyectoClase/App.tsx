@@ -6,6 +6,8 @@ import Login from "./src/screens/Login";
 import Home from "./src/screens/Home";
 import Register from "./src/screens/Register";
 import TruckLocation from "./src/screens/TruckLocation";
+import RegisterTruck from "./src/screens/RegisterTruck";
+import TruckType from "./src/screens/TruckType";
 
 const Stack =createNativeStackNavigator();
 
@@ -17,8 +19,8 @@ export default function App(){
         <Stack.Screen name='HomeScreen' component={Home}/>
         <Stack.Screen name='RegisterScreen' component={Register}/>
         <Stack.Screen name='TruckLocation' component={TruckLocation}/>
-        <Stack.Screen name='TruckLocation' component={TruckType}/>
-        <Stack.Screen name='TruckLocation' component={RegisterTruck}/>
+        <Stack.Screen name='TruckType' component={TruckType}/>
+        <Stack.Screen name='RegisterTru' component={RegisterTruck}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

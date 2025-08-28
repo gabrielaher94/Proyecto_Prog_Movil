@@ -10,9 +10,21 @@ export default function Home({navigation, route}:any){
       navigation.navigate("TruckLocation");
    
   };
+  const handleTruckType = () => {
+    
+      navigation.navigate("TruckType");
+   
+  };
+  const handleRegisterTruck = () => {
+    
+      navigation.navigate("RegisterTruck");
+   
+  };
 
     return(
         <View>
+          <View>
+            <View> 
             <Text> Bienvenido {correo}</Text>
             <View style={styles.container}>
             <View style={styles.item}>
@@ -21,6 +33,19 @@ export default function Home({navigation, route}:any){
                       onPress={handleTruck}
                       variant="secondary"
                     />
+                    <CustomButton
+                      title="Truck Type"
+                      onPress={handleTruckType}
+                      variant="secondary"
+                    />
+                    <CustomButton
+                      title="Register Truck"
+                      onPress={handleRegisterTruck}
+                      variant="secondary"
+                    />
+                    
+                  </View>
+                  </View>
                   </View>
                   </View>
         </View>
