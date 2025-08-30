@@ -37,17 +37,24 @@ const handleOnchangeGender = (gender: string)=>{
         
     }
 const handleLogin = () =>{
-    try {
+  try {
     if (!email || !password) {
-        Alert.alert("Error", "Por favor complete todos los campos");
-        return;
+      Alert.alert("Error", "Por favor complete todos los campos");
+      return;
     }
-    navigation.navigate("HomeScreen", {correo:email});
-} catch (error: any) {
-    
-}
-}
 
+    navigation.navigate("Perfil", {
+      name,
+      id,
+      phone,
+      gender,
+      email,
+      password
+    });
+  } catch (error: any) {
+    console.log(error);
+  }
+}
     return (
         
         <View style={styles.container}>
