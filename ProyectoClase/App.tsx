@@ -5,11 +5,13 @@ import React from "react";
 import Login from "./src/screens/Login";
 import Home from "./src/screens/Home";
 import Register from "./src/screens/Register";
+import { AuthProvider } from "./src/contexts/AuthContext";
 
 const Stack =createNativeStackNavigator();
 
 export default function App(){
   return(
+    <AuthProvider>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="LoginScreen">
         <Stack.Screen name='LoginScreen' component={Login}/>
@@ -17,5 +19,6 @@ export default function App(){
         <Stack.Screen name='RegisterScreen' component={Register}/>
       </Stack.Navigator>
     </NavigationContainer>
+    </AuthProvider>
   );
 };

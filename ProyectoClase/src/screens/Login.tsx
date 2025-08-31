@@ -2,10 +2,13 @@ import { View, StyleSheet, Alert } from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
 import { useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Login({ navigation }: any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const {login, isAllowed}=useAuth();
 
   const handleOnChangeEmail = (text: string) => {
     setEmail(text);
@@ -27,6 +30,7 @@ export default function Login({ navigation }: any) {
         Alert.alert("Error", "Por favor complete todos los campos");
         return;
       }
+      login
       navigation.navigate("HomeScreen", { correo: email });
     } catch (error: any) {
       console.log(error);
