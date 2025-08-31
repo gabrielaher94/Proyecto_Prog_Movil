@@ -39,9 +39,9 @@ export default function CustomInput({value, type ='text', onChange, title ,requi
    
     return (
         <View style={styles.inputContainer}>
-            <View style={[styles.input, error ? styles.inputError : null]}/>
+            
             <TextInput
-            style={styles.input}
+            style={[styles.input, error ? styles.inputError : null]}
             placeholder={title}
             value={value}
             onChangeText={onChange}
@@ -65,11 +65,9 @@ export default function CustomInput({value, type ='text', onChange, title ,requi
 const styles = StyleSheet.create({
     input: {
         flex: 1,
-        paddingVertical: 10,
-        textAlign: 'left',
-        fontSize: 15,
-        color: 'black',
-        
+        paddingVertical: 12,
+        fontSize: 18,
+        color: '#000'
 
     },
     inputError: {
@@ -84,8 +82,9 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         borderWidth: 1,
         borderColor: '#ccc',
-        borderRadius: 5,
+        borderRadius: 3,
         paddingHorizontal: 12,
         backgroundColor: '#f9f9f9ff',
+        marginLeft:20,
     }
 })

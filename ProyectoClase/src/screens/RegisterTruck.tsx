@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, TextInput, TouchableOpacity, Alert } from "react-native";
+import { Text, View, TextInput, TouchableOpacity, Alert, StyleSheet } from "react-native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type RootStackParamList = {
@@ -10,7 +10,6 @@ type RootStackParamList = {
   TruckLocation: undefined;
   TruckType: undefined;
 };
-
 
 type TruckTypeProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "RegisterTruck">;
@@ -42,16 +41,45 @@ export default function RegisterTruck({ navigation }: TruckTypeProps) {
   };
 
   return (
-    <View>
-      <TextInput placeholder="Nombre" value={name} onChangeText={setname} />
-      <TextInput placeholder="Licencia" value={licence} onChangeText={setlicence} />
-      <TextInput placeholder="Modelo" value={model} onChangeText={setmodel} />
-      <TextInput placeholder="Placa" value={placa} onChangeText={setplaca} />
-      <TextInput placeholder="Peso" value={peso} onChangeText={setpeso} keyboardType="numeric" />
+    <View style={styles.container}>
+      <TextInput style={styles.input} placeholder="Nombre" value={name} onChangeText={setname} />
+      <TextInput style={styles.input} placeholder="Licencia" value={licence} onChangeText={setlicence} />
+      <TextInput style={styles.input} placeholder="Modelo" value={model} onChangeText={setmodel} />
+      <TextInput style={styles.input} placeholder="Placa" value={placa} onChangeText={setplaca} />
+      <TextInput style={styles.input} placeholder="Peso" value={peso} onChangeText={setpeso} keyboardType="numeric" />
 
-      <TouchableOpacity onPress={handleSave}>
-        <Text>Guardar</Text>
+      {/* Botón estilizado */}
+      <TouchableOpacity style={styles.button} onPress={handleSave}>
+        <Text style={styles.buttonText}>Guardar</Text>
       </TouchableOpacity>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    justifyContent: "center",
+    backgroundColor: "#fff",
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 12,
+    fontSize: 16,
+  },
+  button: {
+    backgroundColor: "#007bff", // azul tipo bootstrap
+    padding: 15,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+});

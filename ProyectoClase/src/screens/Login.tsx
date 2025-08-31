@@ -1,4 +1,4 @@
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert, Image } from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
 import { useState } from "react";
@@ -45,6 +45,10 @@ export default function Login({ navigation }: any) {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require("../assets/images/logo.jpeg")} // coloca tu logo en la carpeta assets
+        style={styles.logo}
+      />
       <View style={styles.item}>
         <CustomInput
           title="Email"
@@ -86,9 +90,19 @@ export default function Login({ navigation }: any) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
+    flex: 1,
+    justifyContent: "center", // centra verticalmente
+    alignItems: "center", // centra horizontalmente
+    padding: 20,
+    backgroundColor: "#f6f8f8ff",
+  },
+  logo: {
+    width: 120,   // tamaño de logo
+    height: 120,
+    marginBottom: 30, // separación respecto a los inputs
   },
   item: {
+    width: "100%",
     marginVertical: 5,
   },
 });

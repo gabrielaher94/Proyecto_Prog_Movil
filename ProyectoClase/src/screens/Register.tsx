@@ -11,20 +11,20 @@ export default function Register({navigation}: any) {
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
     
-const handleOnchangeName = (name: string)=>{
-    setname(name);
+const handleOnchangeName = (nam: string)=>{
+    setname(nam);
 }
 
-const handleOnchangeID = (id: string)=>{
-    setid(id);
+const handleOnchangeID = (id1: string)=>{
+    setid(id1);
 }
 
-const handleOnchangePhone = (phone: string)=>{
-    setphone(phone);
+const handleOnchangePhone = (phon: string)=>{
+    setphone(phon);
 }
 
-const handleOnchangeGender = (gender: string)=>{
-    setgender(gender);
+const handleOnchangeGender = (gende: string)=>{
+    setgender(gende);
 }
 
     const handleOnChangeEmail = (emai: string) => {
