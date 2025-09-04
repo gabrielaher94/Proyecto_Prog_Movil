@@ -30,16 +30,16 @@ export default function CustomInput({value, type ='text', onChange, title ,requi
     : 'default';
     const getError =()=>{
         if( required && !value) return "Este campo es obligatorio";
-        if(type === 'email'&& value && value.includes('@')) return "El correo no es valido";
+        if(type === 'email'&& value && !value.includes('@')) return "El correo no es valido";
         if(type === 'password' &&value&& value.length < 6) return "La contraseña debe tener al menos 6 caracteres";
     }
     const error = getError();
    
     return (
         <View style={styles.inputContainer}>
-            <View style={[styles.input, error ? styles.inputError : null]}/>
+            
             <TextInput
-            style={styles.input}
+            style={[styles.input, error ? styles.inputError : null]}
             placeholder={title}
             value={value}
             onChangeText={onChange}

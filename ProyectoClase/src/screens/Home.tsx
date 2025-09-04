@@ -1,7 +1,7 @@
 import { Text, View } from "react-native";
 import { useAuth } from "../contexts/AuthContext";
 
-export default function Home({navigation, route}:any){
+export default function Home(){
    
     const{user}=useAuth();
 

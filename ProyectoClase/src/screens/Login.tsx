@@ -8,7 +8,7 @@ export default function Login({ navigation }: any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const {login, isAllowed}=useAuth();
+  const {Login, isAllowed}=useAuth();
 
   const handleOnChangeEmail = (text: string) => {
     setEmail(text);
@@ -30,7 +30,7 @@ export default function Login({ navigation }: any) {
         Alert.alert("Error", "Por favor complete todos los campos");
         return;
       }
-      login
+      Login(email);
       navigation.navigate("HomeScreen", { correo: email });
     } catch (error: any) {
       console.log(error);
