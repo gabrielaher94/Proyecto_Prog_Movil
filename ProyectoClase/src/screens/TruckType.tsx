@@ -1,9 +1,16 @@
 import React from "react";
-import {Text, View,TextInput,StyleSheet, KeyboardTypeOptions, TouchableOpacity} from "react-native";
+import {FlatList, Text, View,TextInput,StyleSheet, KeyboardTypeOptions, TouchableOpacity} from "react-native";
 import { useState } from "react";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import CustomButton from "../components/CustomButton";
-
+import RegisterTruck from "./RegisterTruck";
+type Truck = {
+    nombre: string;
+    licencia: string;
+    modelo: string;
+    placa: string;
+    peso: string;
+};
 type RootStackParamList = {
   Home: undefined;
   Register: undefined;
@@ -24,6 +31,12 @@ const [licence, setlicence ] =useState('');
 const [model, setmodel]=useState('');
 const [placa, setplaca]=useState('');
 const[peso, setpeso]=useState('');
+
+const truck: Truck=[
+  {
+
+  }
+]
 
 
 };

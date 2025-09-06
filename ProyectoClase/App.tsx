@@ -9,11 +9,13 @@ import TruckLocation from "./src/screens/TruckLocation";
 import RegisterTruck from "./src/screens/RegisterTruck";
 import TruckType from "./src/screens/TruckType";
 import Perfil from "./src/screens/Perfil";
+import { AuthProvider } from "./src/contexts/AuthContext";
 
 const Stack =createNativeStackNavigator();
 
 export default function App(){
   return(
+    <AuthProvider>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="LoginScreen">
         <Stack.Screen name='LoginScreen' component={Login}/>
@@ -25,5 +27,6 @@ export default function App(){
         <Stack.Screen name='Perfil' component={Perfil}/>
       </Stack.Navigator>
     </NavigationContainer>
+    </AuthProvider>
   );
 };

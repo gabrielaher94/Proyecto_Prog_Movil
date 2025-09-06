@@ -4,11 +4,16 @@ import CustomInput from "../components/CustomInput";
 import { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
+import { useAuth } from "../contexts/AuthContext";
+
+
 
 
 export default function Login({ navigation }: any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const {Login, isAllowed}=useAuth();
 
   useFocusEffect(
     useCallback(() => {
@@ -26,9 +31,7 @@ export default function Login({ navigation }: any) {
   };
 
   const handleRegister = () => {
-    
       navigation.navigate("RegisterScreen");
-   
   };
 
   const handleLogin = () => {
