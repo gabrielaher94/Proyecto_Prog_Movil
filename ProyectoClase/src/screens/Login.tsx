@@ -1,19 +1,17 @@
 import { View, StyleSheet, Alert, Image } from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { useCallback } from "react";
 import { useAuth } from "../contexts/AuthContext";
-
-
-
+import { useTheme } from "../contexts/ThemeContext";  
 
 export default function Login({ navigation }: any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const {Login, isAllowed}=useAuth();
+  const { Login, isAllowed } = useAuth();
+  const { isDark } = useTheme(); 
 
   useFocusEffect(
     useCallback(() => {
@@ -31,7 +29,7 @@ export default function Login({ navigation }: any) {
   };
 
   const handleRegister = () => {
-      navigation.navigate("RegisterScreen");
+    navigation.navigate("RegisterScreen");
   };
 
   const handleLogin = () => {
@@ -47,11 +45,17 @@ export default function Login({ navigation }: any) {
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        isDark ? styles.darkBackground : styles.lightBackground,
+      ]}
+    >
       <Image
-        source={require("../assets/images/logo.jpeg")} // coloca tu logo en la carpeta assets
+        source={require("../assets/images/logo.jpeg")}
         style={styles.logo}
       />
+
       <View style={styles.item}>
         <CustomInput
           title="Email"
@@ -69,7 +73,7 @@ export default function Login({ navigation }: any) {
       </View>
 
       <View style={styles.item}>
-        <CustomButton title="Iniciar Sesion" onPress={handleLogin} />
+        <CustomButton title="Iniciar Sesión" onPress={handleLogin} />
       </View>
 
       <View style={styles.item}>
@@ -94,19 +98,26 @@ export default function Login({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center", // centra verticalmente
-    alignItems: "center", // centra horizontalmente
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
-    backgroundColor: "#f6f8f8ff",
   },
+  lightBackground: { backgroundColor: "#f6f8f8ff" },
+  darkBackground: { backgroundColor: "#000" },
+
   logo: {
-    width: 120,   // tamaño de logo
+    width: 120,
     height: 120,
-    marginBottom: 30, // separación respecto a los inputs
+    marginBottom: 30,
   },
   item: {
     width: "100%",
     marginVertical: 5,
   },
+  footerText: {
+    marginTop: 20,
+    fontSize: 16,
+  },
+  lightText: { color: "#000" },
+  darkText: { color: "#fff" },
 });
-
