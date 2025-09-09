@@ -5,6 +5,7 @@ import { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useAuth } from "../contexts/AuthContext";
 import { useTheme } from "../contexts/ThemeContext";  
+import auth from '@react-native-firebase/auth';
 
 export default function Login({ navigation }: any) {
   const [email, setEmail] = useState("");
@@ -32,16 +33,34 @@ export default function Login({ navigation }: any) {
     navigation.navigate("RegisterScreen");
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     try {
-      if (!email || !password) {
+      if (!email.trim() || !password.trim()) {
         Alert.alert("Error", "Por favor complete todos los campos");
         return;
       }
-      navigation.navigate("HomeScreen", { correo: email });
+
+      const userCredential = await auth().signInWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+
+      navigation.navigate("HomeScreen", { correo: user.email });
     } catch (error: any) {
-      console.log(error);
-    }
+  console.log("Login error:", error.code, error.message);
+
+  switch (error.code) {
+    case "auth/invalid-email":
+      Alert.alert("Error", "El correo no es válido");
+      break;
+    case "auth/user-not-found":
+    case "auth/wrong-password":
+    case "auth/invalid-credential":
+      Alert.alert("Error", "Correo o contraseña incorrectos");
+      break;
+    default:
+      Alert.alert("Error", error.message);
+      break;
+  }
+}
   };
 
   return (
