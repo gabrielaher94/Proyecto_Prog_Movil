@@ -1,28 +1,17 @@
 import React, { useState } from "react";
 import { Text, View, TextInput, TouchableOpacity, Alert, StyleSheet } from "react-native";
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import firestore from '@react-native-firebase/firestore';
 
-type RootStackParamList = {
-  Home: undefined;
-  Register: undefined;
-  RegisterTruck: undefined;
-  Services: undefined;
-  TruckLocation: undefined;
-  TruckType: undefined;
-};
 
-type TruckTypeProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, "RegisterTruck">;
-};
-
-export default function RegisterTruck({ navigation }: TruckTypeProps) {
+export default function RegisterTruck() {
   const [name, setname] = useState('');
   const [licence, setlicence] = useState('');
   const [model, setmodel] = useState('');
   const [placa, setplaca] = useState('');
   const [peso, setpeso] = useState('');
+  
 
-  const handleSave = () => {
+  const handleSave = async () => {
     try {
       if (!name || !licence || !model || !placa || !peso) {
         Alert.alert("Error", "Por favor complete todos los campos");
@@ -34,9 +23,27 @@ export default function RegisterTruck({ navigation }: TruckTypeProps) {
         return;
       }
 
-      navigation.navigate("TruckType");
+      // 🔹 Guardar en Firestore
+      await firestore().collection("trucks").add({
+        nombre: name,
+        licencia: licence,
+        modelo: model,
+        placa: placa,
+        peso: Number(peso),
+        creadoEn: firestore.FieldValue.serverTimestamp(),
+      });
+
+      Alert.alert("Éxito", "Camión registrado correctamente ✅");
+
+      // Limpiar inputs
+      setname("");
+      setlicence("");
+      setmodel("");
+      setplaca("");
+      setpeso("");
     } catch (error: any) {
       console.log(error);
+      Alert.alert("Error", "No se pudo registrar el camión");
     }
   };
 
@@ -48,7 +55,6 @@ export default function RegisterTruck({ navigation }: TruckTypeProps) {
       <TextInput style={styles.input} placeholder="Placa" value={placa} onChangeText={setplaca} />
       <TextInput style={styles.input} placeholder="Peso" value={peso} onChangeText={setpeso} keyboardType="numeric" />
 
-      {/* Botón estilizado */}
       <TouchableOpacity style={styles.button} onPress={handleSave}>
         <Text style={styles.buttonText}>Guardar</Text>
       </TouchableOpacity>
@@ -72,7 +78,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    backgroundColor: "#007bff", // azul tipo bootstrap
+    backgroundColor: "#007bff",
     padding: 15,
     borderRadius: 8,
     alignItems: "center",
