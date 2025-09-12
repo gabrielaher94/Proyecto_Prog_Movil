@@ -1,15 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, TextInput, TouchableOpacity, Alert, StyleSheet } from "react-native";
-import firestore from '@react-native-firebase/firestore';
+import firestore from "@react-native-firebase/firestore";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
+// 👇 Debes definir RootStackParamList igual que en TruckType
+type Truck = {
+  id: string;
+  nombre: string;
+  licencia: string;
+  modelo: string;
+  placa: string;
+  peso: number;
+};
 
-export default function RegisterTruck() {
-  const [name, setname] = useState('');
-  const [licence, setlicence] = useState('');
-  const [model, setmodel] = useState('');
-  const [placa, setplaca] = useState('');
-  const [peso, setpeso] = useState('');
-  
+type RootStackParamList = {
+  RegisterTruck: { truck?: Truck };
+};
+
+type Props = NativeStackScreenProps<RootStackParamList, "RegisterTruck">;
+
+export default function RegisterTruck({ route, navigation }: Props) {
+  const truck = route.params?.truck; // 👈 si viene, estamos editando
+
+  const [name, setName] = useState("");
+  const [licence, setLicence] = useState("");
+  const [model, setModel] = useState("");
+  const [placa, setPlaca] = useState("");
+  const [peso, setPeso] = useState("");
+
+  // 👇 Precargar datos si estamos en modo edición
+  useEffect(() => {
+    if (truck) {
+      setName(truck.nombre);
+      setLicence(truck.licencia);
+      setModel(truck.modelo);
+      setPlaca(truck.placa);
+      setPeso(truck.peso.toString());
+    }
+  }, [truck]);
 
   const handleSave = async () => {
     try {
@@ -23,40 +51,46 @@ export default function RegisterTruck() {
         return;
       }
 
-      // 🔹 Guardar en Firestore
-      await firestore().collection("trucks").add({
-        nombre: name,
-        licencia: licence,
-        modelo: model,
-        placa: placa,
-        peso: Number(peso),
-        creadoEn: firestore.FieldValue.serverTimestamp(),
-      });
+      if (truck) {
+        // 🔄 Actualizar
+        await firestore().collection("trucks").doc(truck.id).update({
+          nombre: name,
+          licencia: licence,
+          modelo: model,
+          placa: placa,
+          peso: Number(peso),
+        });
+        Alert.alert("Éxito", "Camión actualizado correctamente ✅");
+      } else {
+        // 🆕 Crear
+        await firestore().collection("trucks").add({
+          nombre: name,
+          licencia: licence,
+          modelo: model,
+          placa: placa,
+          peso: Number(peso),
+          creadoEn: firestore.FieldValue.serverTimestamp(),
+        });
+        Alert.alert("Éxito", "Camión registrado correctamente ✅");
+      }
 
-      Alert.alert("Éxito", "Camión registrado correctamente ✅");
-
-      // Limpiar inputs
-      setname("");
-      setlicence("");
-      setmodel("");
-      setplaca("");
-      setpeso("");
+      navigation.goBack(); // 👈 volver a la lista
     } catch (error: any) {
       console.log(error);
-      Alert.alert("Error", "No se pudo registrar el camión");
+      Alert.alert("Error", "No se pudo guardar el camión");
     }
   };
 
   return (
     <View style={styles.container}>
-      <TextInput style={styles.input} placeholder="Nombre" value={name} onChangeText={setname} />
-      <TextInput style={styles.input} placeholder="Licencia" value={licence} onChangeText={setlicence} />
-      <TextInput style={styles.input} placeholder="Modelo" value={model} onChangeText={setmodel} />
-      <TextInput style={styles.input} placeholder="Placa" value={placa} onChangeText={setplaca} />
-      <TextInput style={styles.input} placeholder="Peso" value={peso} onChangeText={setpeso} keyboardType="numeric" />
+      <TextInput style={styles.input} placeholder="Nombre" value={name} onChangeText={setName} />
+      <TextInput style={styles.input} placeholder="Licencia" value={licence} onChangeText={setLicence} />
+      <TextInput style={styles.input} placeholder="Modelo" value={model} onChangeText={setModel} />
+      <TextInput style={styles.input} placeholder="Placa" value={placa} onChangeText={setPlaca} />
+      <TextInput style={styles.input} placeholder="Peso" value={peso} onChangeText={setPeso} keyboardType="numeric" />
 
       <TouchableOpacity style={styles.button} onPress={handleSave}>
-        <Text style={styles.buttonText}>Guardar</Text>
+        <Text style={styles.buttonText}>{truck ? "Actualizar" : "Guardar"}</Text>
       </TouchableOpacity>
     </View>
   );
