@@ -71,7 +71,7 @@ export default function Login({ navigation }: any) {
       ]}
     >
       <Image
-        source={require("../assets/images/logo.jpeg")}
+        source={require("../assets/images/Login.png")}
         style={styles.logo}
       />
 
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
   },
-  lightBackground: { backgroundColor: "#f6f8f8ff" },
+  lightBackground: { backgroundColor: "#f7f7f8ff" },
   darkBackground: { backgroundColor: "#000" },
 
   logo: {

@@ -15,7 +15,7 @@ type Truck = {
 type RootStackParamList = {
   Home: undefined;
   Register: undefined;
-  RegisterTruck: { truck?: Truck }; // 👈 le pasamos truck cuando sea actualización
+  RegisterTruck: { truck?: Truck }; // le pasamos truck cuando sea actualización
   Services: undefined;
   TruckLocation: undefined;
   TruckType: undefined;
@@ -44,7 +44,7 @@ export default function TruckType({ navigation }: TruckTypeProps) {
     return () => unsubscribe();
   }, []);
 
-  // 🔴 Eliminar camión
+  // Eliminar camión
   const deleteTruck = (id: string) => {
     Alert.alert("Eliminar", "¿Seguro que deseas eliminar este camión?", [
       { text: "Cancelar", style: "cancel" },
