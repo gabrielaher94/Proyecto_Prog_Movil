@@ -1,14 +1,26 @@
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert, Image } from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { useAuth } from "../contexts/AuthContext";
+import { useTheme } from "../contexts/ThemeContext";  
+import auth from '@react-native-firebase/auth';
+import React from "react";
 
 export default function Login({ navigation }: any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const {Login, isAllowed}=useAuth();
+  const { Login, isAllowed } = useAuth();
+  const { isDark } = useTheme(); 
+
+  useFocusEffect(
+    useCallback(() => {
+      setEmail("");
+      setPassword("");
+    }, [])
+  );
 
   const handleOnChangeEmail = (text: string) => {
     setEmail(text);
@@ -19,36 +31,56 @@ export default function Login({ navigation }: any) {
   };
 
   const handleRegister = () => {
-    
-      navigation.navigate("RegisterScreen");
-   
+    navigation.navigate("RegisterScreen");
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     try {
-      if (!email || !password) {
+      if (!email.trim() || !password.trim()) {
         Alert.alert("Error", "Por favor complete todos los campos");
         return;
       }
-      Login(email);
-      navigation.navigate("HomeScreen", { correo: email });
+
+      const userCredential = await auth().signInWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+
+      navigation.navigate("HomeScreen", { correo: user.email });
     } catch (error: any) {
-      console.log(error);
-    }
+  console.log("Login error:", error.code, error.message);
+
+  switch (error.code) {
+    case "auth/invalid-email":
+      Alert.alert("Error", "El correo no es válido");
+      break;
+    case "auth/user-not-found":
+    case "auth/wrong-password":
+    case "auth/invalid-credential":
+      Alert.alert("Error", "Correo o contraseña incorrectos");
+      break;
+    default:
+      Alert.alert("Error", error.message);
+      break;
+  }
+}
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        isDark ? styles.darkBackground : styles.lightBackground,
+      ]}
+    >
       <View style={styles.item}>
         <CustomInput
-          title="Ingrese su correo"
-          value={email}
+          title="Email"
+          value={email} 
           type="email"
           onChange={handleOnChangeEmail}
         />
 
         <CustomInput
-          title="Ingrese su contraseña"
+          title="Password"
           value={password}
           type="password"
           onChange={handleOnChangePassword}
@@ -56,12 +88,12 @@ export default function Login({ navigation }: any) {
       </View>
 
       <View style={styles.item}>
-        <CustomButton title="Iniciar Sesion" onPress={handleLogin} />
+        <CustomButton title="Iniciar Sesión" onPress={handleLogin} />
       </View>
 
       <View style={styles.item}>
         <CustomButton
-          title="Registrarme"
+          title="Registrar"
           onPress={handleRegister}
           variant="secondary"
         />
@@ -80,10 +112,27 @@ export default function Login({ navigation }: any) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  lightBackground: { backgroundColor: "#f7f7f8ff" },
+  darkBackground: { backgroundColor: "#000" },
+
+  logo: {
+    width: 120,
+    height: 120,
+    marginBottom: 30,
   },
   item: {
+    width: "100%",
     marginVertical: 5,
   },
+  footerText: {
+    marginTop: 20,
+    fontSize: 16,
+  },
+  lightText: { color: "#000" },
+  darkText: { color: "#fff" },
 });
-

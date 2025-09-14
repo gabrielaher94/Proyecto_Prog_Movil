@@ -25,8 +25,8 @@ const getStyles =(variant:'primary' |'secondary' | 'tertiary')=>{
             margin: 10,
             borderRadius:5,
             backgroundColor:
-            variant==='primary' ? '#1c1c30' : 
-            variant==='secondary' ? '#65659c' :
+            variant==='primary' ? '#5a5ad1ff' : 
+            variant==='secondary' ? '#6587aeff' :
             '#dfdff7',
             borderWidth: variant=== 'tertiary'? 1:0,
             borderColor: "#ccc"
