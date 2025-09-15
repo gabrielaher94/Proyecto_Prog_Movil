@@ -1,3 +1,4 @@
+// android/build.gradle
 buildscript {
     ext {
         buildToolsVersion = "35.0.0"
@@ -10,16 +11,27 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-         maven { url 'https://maven.google.com' }
+        maven { url 'https://maven.google.com' }
     }
     dependencies {
-        classpath("com.android.tools.build:gradle")
+        classpath("com.android.tools.build:gradle:8.1.0")
         classpath("com.facebook.react:react-native-gradle-plugin")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.24")
         classpath("com.google.gms:google-services:4.4.3")
     }
 }
 
 apply plugin: "com.facebook.react.rootproject"
-//apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
-//apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
+// Repositorios para todo el proyecto
+allprojects {
+    repositories {
+        mavenCentral()
+        google()
+        maven { url 'https://www.jitpack.io' }
+        maven { url 'https://maven.google.com' }
+    }
+}
+
+// Opcional: si usas react-native-vector-icons
+// apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

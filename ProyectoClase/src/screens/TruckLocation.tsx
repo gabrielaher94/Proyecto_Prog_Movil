@@ -10,13 +10,13 @@ export default function TruckLocation() {
 
   useEffect(() => {
     const getRoute = async () => {
-      const apiKey = 'AIzaSyDXv4jsXd3sBYDaJfQrIxlYVQgBMufT-Tc'; // 🔑 coloca aquí tu API key
+      const apiKey = 'AIzaSyDXv4jsXd3sBYDaJfQrIxlYVQgBMufT-Tc'; 
       const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${pointA.latitude},${pointA.longitude}&destination=${pointB.latitude},${pointB.longitude}&key=${apiKey}`;
       
       try {
         const res = await axios.get(url);
 
-        // ✅ Validaciones para evitar crash
+        
         if (
           res.data &&
           res.data.routes &&
@@ -90,5 +90,5 @@ export default function TruckLocation() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  map: { flex: 1 }, // ✅ más simple que usar Dimensions
+  map: { flex: 1 }, 
 });
