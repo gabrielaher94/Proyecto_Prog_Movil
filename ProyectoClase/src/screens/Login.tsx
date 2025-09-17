@@ -1,4 +1,4 @@
-import { View, StyleSheet, Alert, Image } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
 import { useState, useCallback } from "react";
@@ -7,6 +7,8 @@ import { useAuth } from "../contexts/AuthContext";
 import { useTheme } from "../contexts/ThemeContext";  
 import auth from '@react-native-firebase/auth';
 import React from "react";
+import Icon from "react-native-vector-icons/Ionicons"; // 👈 Para el ícono de usuario y flecha
+import { Alert } from "react-native";
 
 export default function Login({ navigation }: any) {
   const [email, setEmail] = useState("");
@@ -22,13 +24,8 @@ export default function Login({ navigation }: any) {
     }, [])
   );
 
-  const handleOnChangeEmail = (text: string) => {
-    setEmail(text);
-  };
-
-  const handleOnChangePassword = (text: string) => {
-    setPassword(text);
-  };
+  const handleOnChangeEmail = (text: string) => setEmail(text);
+  const handleOnChangePassword = (text: string) => setPassword(text);
 
   const handleRegister = () => {
     navigation.navigate("RegisterScreen");
@@ -43,37 +40,43 @@ export default function Login({ navigation }: any) {
 
       const userCredential = await auth().signInWithEmailAndPassword(email, password);
       const user = userCredential.user;
-
       navigation.navigate("HomeScreen", { correo: user.email });
-    } catch (error: any) {
-  console.log("Login error:", error.code, error.message);
 
-  switch (error.code) {
-    case "auth/invalid-email":
-      Alert.alert("Error", "El correo no es válido");
-      break;
-    case "auth/user-not-found":
-    case "auth/wrong-password":
-    case "auth/invalid-credential":
-      Alert.alert("Error", "Correo o contraseña incorrectos");
-      break;
-    default:
-      Alert.alert("Error", error.message);
-      break;
-  }
-}
+    } catch (error: any) {
+      console.log("Login error:", error.code, error.message);
+
+      switch (error.code) {
+        case "auth/invalid-email":
+          Alert.alert("Error", "El correo no es válido");
+          break;
+        case "auth/user-not-found":
+        case "auth/wrong-password":
+        case "auth/invalid-credential":
+          Alert.alert("Error", "Correo o contraseña incorrectos");
+          break;
+        default:
+          Alert.alert("Error", error.message);
+          break;
+      }
+    }
   };
 
   return (
-    <View
-      style={[
-        styles.container,
-        isDark ? styles.darkBackground : styles.lightBackground,
-      ]}
-    >
-      <View style={styles.item}>
+    <View style={styles.container}>
+      {/* Parte superior con fondo negro y el ícono */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Icon name="arrow-back" size={26} color="#fff" />
+        </TouchableOpacity>
+        <Icon name="person-outline" size={80} color="#fff" style={styles.userIcon} />
+      </View>
+
+      {/* Contenedor blanco */}
+      <View style={styles.content}>
+        <Text style={styles.title}>Login</Text>
+
         <CustomInput
-          title="Email"
+          title="E-mail"
           value={email} 
           type="email"
           onChange={handleOnChangeEmail}
@@ -85,26 +88,19 @@ export default function Login({ navigation }: any) {
           type="password"
           onChange={handleOnChangePassword}
         />
-      </View>
 
-      <View style={styles.item}>
-        <CustomButton title="Iniciar Sesión" onPress={handleLogin} />
-      </View>
+        <TouchableOpacity style={styles.forgotPassword}>
+          <Text style={styles.forgotText}>Forgot Password?</Text>
+        </TouchableOpacity>
 
-      <View style={styles.item}>
-        <CustomButton
-          title="Registrar"
-          onPress={handleRegister}
-          variant="secondary"
-        />
-      </View>
+        <CustomButton title="Login" onPress={handleLogin} />
 
-      <View style={styles.item}>
-        <CustomButton
-          title="Cambiar contraseña"
-          onPress={() => {}}
-          variant="tertiary"
-        />
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Don’t have any account? </Text>
+          <TouchableOpacity onPress={handleRegister}>
+            <Text style={styles.footerLink}>Sign Up</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -113,26 +109,58 @@ export default function Login({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    backgroundColor: "#fff",
+  },
+  header: {
+    backgroundColor: "#000",
+    height: 200,
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40,
     alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+  },
+  backButton: {
+    position: "absolute",
+    top: 40,
+    left: 20,
+  },
+  userIcon: {
+    marginTop: 20,
+  },
+  content: {
+    flex: 1,
     padding: 20,
+    marginTop: -40,
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
   },
-  lightBackground: { backgroundColor: "#f7f7f8ff" },
-  darkBackground: { backgroundColor: "#000" },
-
-  logo: {
-    width: 120,
-    height: 120,
-    marginBottom: 30,
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 20,
+    color: "#000",
   },
-  item: {
-    width: "100%",
-    marginVertical: 5,
+  forgotPassword: {
+    alignSelf: "flex-end",
+    marginVertical: 10,
+  },
+  forgotText: {
+    color: "#777",
+    fontSize: 14,
+  },
+  footer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 30,
   },
   footerText: {
-    marginTop: 20,
-    fontSize: 16,
+    color: "#000",
   },
-  lightText: { color: "#000" },
-  darkText: { color: "#fff" },
+  footerLink: {
+    color: "#000",
+    fontWeight: "bold",
+  },
 });

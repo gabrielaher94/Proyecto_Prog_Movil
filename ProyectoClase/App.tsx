@@ -20,13 +20,13 @@ export default function App() {
         <AuthProvider>
           <NavigationContainer>
             <Stack.Navigator initialRouteName="LoginScreen">
-              <Stack.Screen name="LoginScreen" component={Login} />
-              <Stack.Screen name="HomeScreen" component={Home} />
-              <Stack.Screen name="RegisterScreen" component={Register} />
+              <Stack.Screen name="LoginScreen" component={Login}options={{ headerShown: false }} />
+              <Stack.Screen name="HomeScreen" component={Home}options={{ headerShown: false }} />
+              <Stack.Screen name="RegisterScreen" component={Register}options={{ headerShown: false }} />
               <Stack.Screen name="TruckLocation" component={TruckLocation} />
-              <Stack.Screen name="TruckType" component={TruckType} />
-              <Stack.Screen name="RegisterTruck" component={RegisterTruck} />
-              <Stack.Screen name="Perfil" component={Perfil} />
+              <Stack.Screen name="TruckType" component={TruckType} options={{ headerShown: false }}/>
+              <Stack.Screen name="RegisterTruck" component={RegisterTruck}options={{ headerShown: false }} />
+              <Stack.Screen name="Perfil" component={Perfil} options={{ headerShown: false }}/>
             </Stack.Navigator>
           </NavigationContainer>
         </AuthProvider>

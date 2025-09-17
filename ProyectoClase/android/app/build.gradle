@@ -51,23 +51,21 @@ android {
 }
 
 dependencies {
-    // React Native base
+    
     implementation("com.facebook.react:react-android")
 
-    // 👇 Firebase BOM (gestiona todas las versiones de Firebase)
+
     implementation platform("com.google.firebase:firebase-bom:34.2.0")
 
-    // 👇 Dependencias Firebase que quieras usar
+    
     implementation "com.google.firebase:firebase-auth"
     implementation "com.google.firebase:firebase-analytics"
-    // Si luego usas notificaciones, añade:
-    // implementation "com.google.firebase:firebase-messaging"
+    
 
-    // Google Maps
     implementation project(':react-native-maps')
     implementation "com.google.android.gms:play-services-maps:18.2.0"
 
-    // Multidex
+    
     implementation "androidx.multidex:multidex:2.0.1"
 
     if (hermesEnabled.toBoolean()) {
