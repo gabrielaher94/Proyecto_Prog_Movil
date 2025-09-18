@@ -32,7 +32,7 @@ export default function TruckLocation() {
             .add({
               from: pointA,
               to: pointB,
-              coords: points,
+              polyline: res.data.routes[0].overview_polyline.points,
               createdAt: firestore.FieldValue.serverTimestamp(),
             });
 

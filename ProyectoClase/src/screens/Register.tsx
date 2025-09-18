@@ -15,6 +15,15 @@ export default function Register({ navigation }: any) {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
 
+  const clearFields = () => {
+    setname("");
+    setid("");
+    setphone("");
+    setgender("");
+    setemail("");
+    setpassword("");
+  };
+
   const handleRegister = async () => {
     try {
       if (!email || !password || !name || !id || !phone || !gender) {
@@ -31,7 +40,6 @@ export default function Register({ navigation }: any) {
       const userCredential = await auth().createUserWithEmailAndPassword(email, password);
       const user = userCredential.user;
 
-
       await firestore().collection('users').doc(user.uid).set({
         name,
         id,
@@ -42,6 +50,10 @@ export default function Register({ navigation }: any) {
 
       Alert.alert("Éxito", "Usuario registrado correctamente ✅");
 
+      // 🔹 Limpiar inputs
+      clearFields();
+
+      // 🔹 Navegar al perfil con los datos recién registrados
       navigation.navigate("Perfil", { name, id, phone, gender, email });
     } catch (error: any) {
       console.log(error);
@@ -61,31 +73,28 @@ export default function Register({ navigation }: any) {
 
       {/* 🔹 Contenido */}
       <View style={styles.content}>
-  <CustomInput title="Full Name" value={name} type="text" onChange={setname} />
-  <CustomInput title="ID" value={id} type="text" onChange={setid} />
-  <CustomInput title="Phone" value={phone} type="phone" onChange={setphone} />
-  <CustomInput title="Gender" value={gender} type="text" onChange={setgender} />
-  <CustomInput title="E-mail" value={email} type="email" onChange={setemail} />
-  <CustomInput title="Password" value={password} type="password" onChange={setpassword} />
+        <CustomInput title="Full Name" value={name} type="text" onChange={setname} />
+        <CustomInput title="ID" value={id} type="text" onChange={setid} />
+        <CustomInput title="Phone" value={phone} type="phone" onChange={setphone} />
+        <CustomInput title="Gender" value={gender} type="text" onChange={setgender} />
+        <CustomInput title="E-mail" value={email} type="email" onChange={setemail} />
+        <CustomInput title="Password" value={password} type="password" onChange={setpassword} />
 
-  <CustomButton title="Sign Up" onPress={handleRegister} />
+        <CustomButton title="Sign Up" onPress={handleRegister} />
 
-  <View style={styles.footer}>
-    <Text style={styles.footerText}>Already have an account? </Text>
-    <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")}>
-      <Text style={styles.footerLink}>Login</Text>
-    </TouchableOpacity>
-  </View>
-</View>
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Already have an account? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")}>
+            <Text style={styles.footerLink}>Login</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
+  container: { flex: 1, backgroundColor: "#fff" },
   header: {
     backgroundColor: "#000",
     height: 150,
@@ -95,17 +104,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "relative",
   },
-  backButton: {
-    position: "absolute",
-    top: 40,
-    left: 20,
-  },
-  headerTitle: {
-    fontSize: 26,
-    fontWeight: "bold",
-    color: "#fff",
-    marginTop: 20,
-  },
+  backButton: { position: "absolute", top: 40, left: 20 },
+  headerTitle: { fontSize: 26, fontWeight: "bold", color: "#fff", marginTop: 20 },
   content: {
     flex: 1,
     padding: 20,
@@ -114,16 +114,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
   },
-  footer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 30,
-  },
-  footerText: {
-    color: "#000",
-  },
-  footerLink: {
-    color: "#000",
-    fontWeight: "bold",
-  },
+  footer: { flexDirection: "row", justifyContent: "center", marginTop: 30 },
+  footerText: { color: "#000" },
+  footerLink: { color: "#000", fontWeight: "bold" },
 });

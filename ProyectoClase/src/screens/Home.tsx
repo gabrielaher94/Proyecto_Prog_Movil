@@ -11,146 +11,139 @@ export default function Home({ navigation, route }: any) {
   const handleTruckType = () => navigation.navigate("TruckType");
   const handleRegisterTruck = () => navigation.navigate("RegisterTruck");
 
-  // 🔹 Botón personalizado
-  // eslint-disable-next-line react/no-unstable-nested-components
+  // 🔹 Botón personalizado con estilos dinámicos
   const HomeButton = ({
     title,
     onPress,
-    color,
     icon,
   }: {
     title: string;
     onPress: () => void;
-    color: string;
     icon: string;
   }) => (
     <TouchableOpacity
-      style={[styles.button, { backgroundColor: color }]}
+      style={[
+        styles.button,
+        isDark ? styles.buttonDark : styles.buttonLight, // cambia según modo
+      ]}
       onPress={onPress}
       activeOpacity={0.8}
     >
-      <Icon name={icon} size={22} color="#fff" style={styles.icon} />
-      <Text style={styles.buttonText}>{title}</Text>
+      <Icon
+        name={icon}
+        size={22}
+        color={isDark ? "#000" : "#fff"} // icono cambia también
+        style={styles.icon}
+      />
+      <Text
+        style={[
+          styles.buttonText,
+          isDark ? styles.buttonTextDark : styles.buttonTextLight, // texto cambia según modo
+        ]}
+      >
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 
   return (
-    <View
-      style={[
-        styles.container,
-        isDark ? styles.darkBackground : styles.lightBackground,
-      ]}
-    >
-      <Text
-        style={[
-          styles.text,
-          isDark ? styles.darkText : styles.lightText,
-        ]}
-      >
-        Bienvenido {correo}
-      </Text>
-
-      {/* 🔹 Switch moderno en lugar de Picker */}
-      <View style={styles.switchContainer}>
-        <Text
-          style={[
-            styles.switchLabel,
-            isDark ? styles.darkText : styles.lightText,
-          ]}
-        >
-          {isDark ? "Modo Oscuro" : "Modo Claro"}
+    <View style={[styles.container, isDark ? styles.darkBackground : styles.lightBackground]}>
+      <View style={styles.content}>
+        {/* 🔹 Saludo */}
+        <Text style={[styles.text, isDark ? styles.darkText : styles.lightText]}>
+          Bienvenido {correo}
         </Text>
-        <Switch
-          value={isDark}
-          onValueChange={(value) => setTheme(value ? "dark" : "light")}
-          thumbColor={isDark ? "#fff" : "#000"}
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-        />
-      </View>
 
-      {/* 🔹 Botones personalizados */}
-      <View style={styles.item}>
-        <HomeButton
-          title="Truck Location"
-          onPress={handleTruck}
-          color="#007bff"
-          icon="map-marker-truck"
-        />
-        <HomeButton
-          title="Truck Type"
-          onPress={handleTruckType}
-          color="#6c757d"
-          icon="truck-outline"
-        />
-        <HomeButton
-          title="Register Truck"
-          onPress={handleRegisterTruck}
-          color="#dc3545"
-          icon="plus-box"
-        />
+        {/* 🔹 Switch de tema */}
+        <View style={styles.switchContainer}>
+          <Text style={[styles.switchLabel, isDark ? styles.darkText : styles.lightText]}>
+            {isDark ? "Modo Oscuro" : "Modo Claro"}
+          </Text>
+          <Switch
+            value={isDark}
+            onValueChange={(value) => setTheme(value ? "dark" : "light")}
+            thumbColor={isDark ? "#fff" : "#000"}
+            trackColor={{ false: "#767577", true: "#81b0ff" }}
+          />
+        </View>
+
+        {/* 🔹 Botones */}
+        <View style={styles.buttonContainer}>
+          <View style={styles.row}>
+            <HomeButton title="Truck Location" onPress={handleTruck} icon="map-marker-truck" />
+            <HomeButton title="Truck Type" onPress={handleTruckType} icon="truck-outline" />
+          </View>
+          <View style={styles.row}>
+            <HomeButton title="Register Truck" onPress={handleRegisterTruck} icon="plus-box" />
+          </View>
+        </View>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    justifyContent: "center",
+  container: { 
+    flex: 1, 
     alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
   },
-  item: {
-    marginVertical: 5,
+
+  content: {
     width: "100%",
     alignItems: "center",
+    justifyContent: "center",
   },
+
   text: {
-    fontSize: 20,
-    marginBottom: 20,
+    fontSize: 24,
     fontWeight: "600",
+    marginBottom: 30,
+    textAlign: "center",
   },
-  lightBackground: {
-    backgroundColor: "#fff",
+
+  lightBackground: { backgroundColor: "#fff" },
+  darkBackground: { backgroundColor: "#121212" },
+  lightText: { color: "#000" },
+  darkText: { color: "#fff" },
+
+  buttonContainer: { width: "100%", alignItems: "center", marginTop: 20 },
+  row: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginVertical: 10,
   },
-  darkBackground: {
-    backgroundColor: "#121212",
-  },
-  lightText: {
-    color: "#000",
-  },
-  darkText: {
-    color: "#fff",
-  },
+
   button: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 14,
-    borderRadius: 14,
-    marginVertical: 10,
-    width: "80%",
-    elevation: 4, // sombra en Android
-    shadowColor: "#000", // sombra en iOS
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
+    paddingVertical: 18,
+    borderRadius: 12,
+    marginHorizontal: 8,
+    flex: 1,
   },
+  buttonLight: {
+    backgroundColor: "#000",
+  },
+  buttonDark: {
+    backgroundColor: "#fff",
+  },
+
   buttonText: {
-    color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
   },
-  icon: {
-    marginRight: 10,
-  },
+  buttonTextLight: { color: "#fff" },
+  buttonTextDark: { color: "#000" },
+
+  icon: { marginRight: 8 },
+
   switchContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 25,
+    marginBottom: 20,
   },
-  switchLabel: {
-    fontSize: 16,
-    marginRight: 10,
-  },
+  switchLabel: { fontSize: 16, marginRight: 10 },
 });

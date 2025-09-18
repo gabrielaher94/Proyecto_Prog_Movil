@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, Text, View, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { FlatList, Text, View, StyleSheet, TouchableOpacity, Alert, TextInput } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import firestore from "@react-native-firebase/firestore";
 
@@ -15,7 +15,7 @@ type Truck = {
 type RootStackParamList = {
   Home: undefined;
   Register: undefined;
-  RegisterTruck: { truck?: Truck }; // le pasamos truck cuando sea actualización
+  RegisterTruck: { truck?: Truck };
   Services: undefined;
   TruckLocation: undefined;
   TruckType: undefined;
@@ -27,6 +27,8 @@ type TruckTypeProps = {
 
 export default function TruckType({ navigation }: TruckTypeProps) {
   const [trucks, setTrucks] = useState<Truck[]>([]);
+  const [search, setSearch] = useState(""); // estado de búsqueda
+  const [filteredTrucks, setFilteredTrucks] = useState<Truck[]>([]);
 
   // Leer de Firestore
   useEffect(() => {
@@ -39,10 +41,21 @@ export default function TruckType({ navigation }: TruckTypeProps) {
           ...doc.data(),
         })) as Truck[];
         setTrucks(data);
+        setFilteredTrucks(data);
       });
 
     return () => unsubscribe();
   }, []);
+
+  // Filtrar camiones según el input
+  useEffect(() => {
+    const filtered = trucks.filter((truck) =>
+      truck.nombre.toLowerCase().includes(search.toLowerCase()) ||
+      truck.modelo.toLowerCase().includes(search.toLowerCase()) ||
+      truck.placa.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilteredTrucks(filtered);
+  }, [search, trucks]);
 
   // Eliminar camión
   const deleteTruck = (id: string) => {
@@ -65,8 +78,16 @@ export default function TruckType({ navigation }: TruckTypeProps) {
 
   return (
     <View style={styles.container}>
+      {/* 🔹 Input de búsqueda */}
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Buscar camión..."
+        value={search}
+        onChangeText={setSearch}
+      />
+
       <FlatList
-        data={trucks}
+        data={filteredTrucks}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.card}>
@@ -79,7 +100,7 @@ export default function TruckType({ navigation }: TruckTypeProps) {
             {/* Botones de acción */}
             <View style={styles.actions}>
               <TouchableOpacity
-                style={[styles.button, { backgroundColor: "#007bff" }]}
+                style={[styles.button, { backgroundColor: "#0d0d0dff" }]}
                 onPress={() => navigation.navigate("RegisterTruck", { truck: item })}
               >
                 <Text style={styles.buttonText}>Actualizar</Text>
@@ -100,12 +121,11 @@ export default function TruckType({ navigation }: TruckTypeProps) {
       />
 
       <TouchableOpacity
-      style={styles.addButton}
-      onPress={() => navigation.navigate("RegisterTruck")}
-    >
-      <Text style={styles.addButtonText}>+ Registrar Camión</Text>
-    </TouchableOpacity>
-
+        style={styles.addButton}
+        onPress={() => navigation.navigate("RegisterTruck")}
+      >
+        <Text style={styles.addButtonText}>+ Registrar Camión</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -113,14 +133,31 @@ export default function TruckType({ navigation }: TruckTypeProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f2f2f7",
     padding: 10,
   },
-  card: {
-    backgroundColor: "#f5f5f5",
-    padding: 15,
-    borderRadius: 10,
+  searchInput: {
+    backgroundColor: "#fff",
+    padding: 12,
+    borderRadius: 12,
     marginBottom: 10,
+    fontSize: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  card: {
+    backgroundColor: "#fff",
+    padding: 15,
+    borderRadius: 12,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 3,
   },
   title: {
     fontWeight: "bold",
@@ -150,9 +187,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   addButton: {
-    backgroundColor: "#007bff",
+    backgroundColor: "#0a0a0aff",
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 12,
     alignItems: "center",
     marginTop: 10,
   },
