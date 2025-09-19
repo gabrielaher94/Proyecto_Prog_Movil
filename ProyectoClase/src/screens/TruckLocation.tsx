@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Button, Alert } from 'react-native';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE, LatLng } from 'react-native-maps';
 import axios from 'axios';
 import firestore from '@react-native-firebase/firestore';
@@ -9,45 +9,7 @@ export default function TruckLocation() {
   const pointA: LatLng = { latitude: 14.0818, longitude: -87.2068 };
   const pointB: LatLng = { latitude: 14.0790, longitude: -87.2090 };
 
-  useEffect(() => {
-    const getRoute = async () => {
-      const apiKey = 'AIzaSyDXv4jsXd3sBYDaJfQrIxlYVQgBMufT-Tc'; 
-      const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${pointA.latitude},${pointA.longitude}&destination=${pointB.latitude},${pointB.longitude}&key=${apiKey}`;
-      
-      try {
-        const res = await axios.get(url);
-
-        if (
-          res.data &&
-          res.data.routes &&
-          res.data.routes.length > 0 &&
-          res.data.routes[0].overview_polyline
-        ) {
-          const points = decodePolyline(res.data.routes[0].overview_polyline.points);
-          setRouteCoords(points);
-
-          // Guardar en Firestore
-          await firestore()
-            .collection('routes')
-            .add({
-              from: pointA,
-              to: pointB,
-              polyline: res.data.routes[0].overview_polyline.points,
-              createdAt: firestore.FieldValue.serverTimestamp(),
-            });
-
-          console.log('✅ Ruta guardada en Firestore');
-        } else {
-          console.warn("⚠️ No se encontró ninguna ruta en la respuesta de la API", res.data?.status);
-        }
-      } catch (err) {
-        console.error("❌ Error al obtener o guardar la ruta:", err);
-      }
-    };
-
-    getRoute();
-  }, []);
-
+  // Función para decodificar polyline de Google
   const decodePolyline = (t: string): LatLng[] => {
     let points: LatLng[] = [];
     let index = 0, len = t.length;
@@ -78,6 +40,47 @@ export default function TruckLocation() {
     return points;
   };
 
+  // Función para obtener la ruta desde Google Maps
+  const fetchRoute = async () => {
+    const apiKey = 'AIzaSyDXv4jsXd3sBYDaJfQrIxlYVQgBMufT-Tc'; // Cambia por tu API Key
+    const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${pointA.latitude},${pointA.longitude}&destination=${pointB.latitude},${pointB.longitude}&key=${apiKey}`;
+    
+    try {
+      const res = await axios.get(url);
+      if (res.data.routes?.length > 0) {
+        const points = decodePolyline(res.data.routes[0].overview_polyline.points);
+        setRouteCoords(points);
+        return res.data.routes[0].overview_polyline.points;
+      } else {
+        Alert.alert("No se encontró ruta");
+        return null;
+      }
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error al obtener la ruta");
+      return null;
+    }
+  };
+
+  // Función para guardar la ruta en Firestore
+  const saveRoute = async () => {
+    const polyline = await fetchRoute();
+    if (!polyline) return;
+
+    try {
+      await firestore().collection('routes').add({
+        from: pointA,
+        to: pointB,
+        polyline,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+      });
+      Alert.alert("Ruta guardada ✅");
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error al guardar la ruta ❌");
+    }
+  };
+
   return (
     <View style={styles.container}>
       <MapView
@@ -96,6 +99,9 @@ export default function TruckLocation() {
           <Polyline coordinates={routeCoords} strokeWidth={4} strokeColor="blue" />
         )}
       </MapView>
+      <View style={{ position: 'absolute', bottom: 20, left: 20, right: 20 }}>
+        <Button title="Guardar Ruta" onPress={saveRoute} />
+      </View>
     </View>
   );
 }
