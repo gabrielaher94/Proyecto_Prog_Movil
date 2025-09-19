@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, TextInput, TouchableOpacity, Alert, StyleSheet } from "react-native";
+import { Text, View, TextInput, TouchableOpacity, Alert, StyleSheet, ScrollView } from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-// 👇 Debes definir RootStackParamList igual que en TruckType
 type Truck = {
   id: string;
   nombre: string;
@@ -20,7 +19,7 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, "RegisterTruck">;
 
 export default function RegisterTruck({ route, navigation }: Props) {
-  const truck = route.params?.truck; // 👈 si viene, estamos editando
+  const truck = route.params?.truck;
 
   const [name, setName] = useState("");
   const [licence, setLicence] = useState("");
@@ -28,7 +27,6 @@ export default function RegisterTruck({ route, navigation }: Props) {
   const [placa, setPlaca] = useState("");
   const [peso, setPeso] = useState("");
 
-  // 👇 Precargar datos si estamos en modo edición
   useEffect(() => {
     if (truck) {
       setName(truck.nombre);
@@ -52,7 +50,6 @@ export default function RegisterTruck({ route, navigation }: Props) {
       }
 
       if (truck) {
-        // 🔄 Actualizar
         await firestore().collection("trucks").doc(truck.id).update({
           nombre: name,
           licencia: licence,
@@ -62,7 +59,6 @@ export default function RegisterTruck({ route, navigation }: Props) {
         });
         Alert.alert("Éxito", "Camión actualizado correctamente ✅");
       } else {
-        // 🆕 Crear
         await firestore().collection("trucks").add({
           nombre: name,
           licencia: licence,
@@ -74,7 +70,7 @@ export default function RegisterTruck({ route, navigation }: Props) {
         Alert.alert("Éxito", "Camión registrado correctamente ✅");
       }
 
-      navigation.goBack(); // 👈 volver a la lista
+      navigation.goBack();
     } catch (error: any) {
       console.log(error);
       Alert.alert("Error", "No se pudo guardar el camión");
@@ -82,44 +78,96 @@ export default function RegisterTruck({ route, navigation }: Props) {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput style={styles.input} placeholder="Nombre" value={name} onChangeText={setName} />
-      <TextInput style={styles.input} placeholder="Licencia" value={licence} onChangeText={setLicence} />
-      <TextInput style={styles.input} placeholder="Modelo" value={model} onChangeText={setModel} />
-      <TextInput style={styles.input} placeholder="Placa" value={placa} onChangeText={setPlaca} />
-      <TextInput style={styles.input} placeholder="Peso" value={peso} onChangeText={setPeso} keyboardType="numeric" />
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>{truck ? "Actualizar Camión" : "Registrar Camión"}</Text>
 
-      <TouchableOpacity style={styles.button} onPress={handleSave}>
-        <Text style={styles.buttonText}>{truck ? "Actualizar" : "Guardar"}</Text>
-      </TouchableOpacity>
-    </View>
+      <View style={styles.card}>
+        <TextInput
+          style={styles.input}
+          placeholder="Nombre"
+          value={name}
+          onChangeText={setName}
+          placeholderTextColor="#888"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Licencia"
+          value={licence}
+          onChangeText={setLicence}
+          placeholderTextColor="#888"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Modelo"
+          value={model}
+          onChangeText={setModel}
+          placeholderTextColor="#888"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Placa"
+          value={placa}
+          onChangeText={setPlaca}
+          placeholderTextColor="#888"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Peso"
+          value={peso}
+          onChangeText={setPeso}
+          keyboardType="numeric"
+          placeholderTextColor="#888"
+        />
+
+        <TouchableOpacity style={styles.button} onPress={handleSave}>
+          <Text style={styles.buttonText}>{truck ? "Actualizar" : "Guardar"}</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 20,
+    flexGrow: 1,
     justifyContent: "center",
+    padding: 20,
+    backgroundColor: "#fbfbfbff",
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#0f0e0eff",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  card: {
     backgroundColor: "#fff",
+    borderRadius: 15,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 5 },
+    elevation: 5,
   },
   input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    paddingVertical: 10,
+    marginBottom: 15,
     fontSize: 16,
   },
   button: {
-    backgroundColor: "#007bff",
-    padding: 15,
-    borderRadius: 8,
+    backgroundColor: "#0a0b0bff",
+    paddingVertical: 15,
+    borderRadius: 10,
     alignItems: "center",
+    marginTop: 10,
   },
   buttonText: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
   },
 });
