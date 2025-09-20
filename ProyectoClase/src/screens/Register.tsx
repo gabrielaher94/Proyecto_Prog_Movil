@@ -96,7 +96,7 @@ export default function Register({ navigation }: any) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff" },
   header: {
-    backgroundColor: "#000",
+    backgroundColor: "#201f1fff",
     height: 150,
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,

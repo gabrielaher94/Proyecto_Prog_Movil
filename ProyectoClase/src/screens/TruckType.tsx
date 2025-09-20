@@ -93,7 +93,7 @@ export default function TruckType({ navigation }: TruckTypeProps) {
           <View style={styles.card}>
             <Text style={styles.title}>{item.nombre}</Text>
             <Text>Licencia: {item.licencia}</Text>
-            <Text>Modelo: {item.modelo}</Text>
+            <Text>Marca: {item.modelo}</Text>
             <Text>Placa: {item.placa}</Text>
             <Text>Peso: {item.peso} T</Text>
 

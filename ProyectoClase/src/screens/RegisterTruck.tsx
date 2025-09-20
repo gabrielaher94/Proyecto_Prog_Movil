@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, TextInput, TouchableOpacity, Alert, StyleSheet, ScrollView } from "react-native";
+import { 
+  Text, 
+  View, 
+  TextInput, 
+  TouchableOpacity, 
+  Alert, 
+  StyleSheet, 
+  ScrollView, 
+  Image 
+} from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import Icon from "react-native-vector-icons/Ionicons";
 
 type Truck = {
   id: string;
@@ -78,68 +88,109 @@ export default function RegisterTruck({ route, navigation }: Props) {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>{truck ? "Actualizar Camión" : "Registrar Camión"}</Text>
-
-      <View style={styles.card}>
-        <TextInput
-          style={styles.input}
-          placeholder="Nombre"
-          value={name}
-          onChangeText={setName}
-          placeholderTextColor="#888"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Licencia"
-          value={licence}
-          onChangeText={setLicence}
-          placeholderTextColor="#888"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Modelo"
-          value={model}
-          onChangeText={setModel}
-          placeholderTextColor="#888"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Placa"
-          value={placa}
-          onChangeText={setPlaca}
-          placeholderTextColor="#888"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Peso"
-          value={peso}
-          onChangeText={setPeso}
-          keyboardType="numeric"
-          placeholderTextColor="#888"
-        />
-
-        <TouchableOpacity style={styles.button} onPress={handleSave}>
-          <Text style={styles.buttonText}>{truck ? "Actualizar" : "Guardar"}</Text>
+    <View style={styles.container}>
+      {/* 🔹 Encabezado negro */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Icon name="arrow-back" size={26} color="#fff" />
         </TouchableOpacity>
+
+        <Image
+          source={require("../assents/images/logo_login.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+
+        {/* 🔹 Texto dentro del encabezado */}
+        <Text style={styles.headerTitle}>Registro de Camiones</Text>
       </View>
-    </ScrollView>
+
+      {/* 🔹 Contenido scrollable */}
+      <ScrollView contentContainerStyle={styles.content}>
+        <View style={styles.card}>
+          <TextInput
+            style={styles.input}
+            placeholder="Nombre"
+            value={name}
+            onChangeText={setName}
+            placeholderTextColor="#888"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Licencia"
+            value={licence}
+            onChangeText={setLicence}
+            placeholderTextColor="#888"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Modelo"
+            value={model}
+            onChangeText={setModel}
+            placeholderTextColor="#888"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Placa"
+            value={placa}
+            onChangeText={setPlaca}
+            placeholderTextColor="#888"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Peso"
+            value={peso}
+            onChangeText={setPeso}
+            keyboardType="numeric"
+            placeholderTextColor="#888"
+          />
+
+          <TouchableOpacity style={styles.button} onPress={handleSave}>
+            <Text style={styles.buttonText}>
+              {truck ? "Actualizar" : "Guardar"}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    justifyContent: "center",
-    padding: 20,
+    flex: 1,
     backgroundColor: "#fbfbfbff",
   },
-  title: {
-    fontSize: 28,
+  header: {
+    backgroundColor: "#242323ff",
+    height: 180,
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+    paddingTop: 10,
+  },
+  backButton: {
+    position: "absolute",
+    top: 40,
+    left: 20,
+  },
+  logo: {
+    width: 190,
+    height: 110,
+    marginBottom: 8,
+  },
+  headerTitle: {
+    fontSize: 20,
     fontWeight: "bold",
-    color: "#0f0e0eff",
-    marginBottom: 20,
+    color: "#fff", // 👈 Texto blanco
     textAlign: "center",
+  },
+  content: {
+    flexGrow: 1,
+    padding: 20,
+    marginTop: -40, // se solapa sobre el header
   },
   card: {
     backgroundColor: "#fff",

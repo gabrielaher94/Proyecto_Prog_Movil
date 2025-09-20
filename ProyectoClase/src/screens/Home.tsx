@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, StyleSheet, TouchableOpacity, Switch } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Switch, Image } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useTheme } from "../contexts/ThemeContext";
 
@@ -11,7 +11,6 @@ export default function Home({ navigation, route }: any) {
   const handleTruckType = () => navigation.navigate("TruckType");
   const handleRegisterTruck = () => navigation.navigate("RegisterTruck");
 
-  // 🔹 Botón personalizado con estilos dinámicos
   const HomeButton = ({
     title,
     onPress,
@@ -24,7 +23,7 @@ export default function Home({ navigation, route }: any) {
     <TouchableOpacity
       style={[
         styles.button,
-        isDark ? styles.buttonDark : styles.buttonLight, // cambia según modo
+        isDark ? styles.buttonDark : styles.buttonLight,
       ]}
       onPress={onPress}
       activeOpacity={0.8}
@@ -32,13 +31,13 @@ export default function Home({ navigation, route }: any) {
       <Icon
         name={icon}
         size={22}
-        color={isDark ? "#000" : "#fff"} // icono cambia también
+        color={isDark ? "#000" : "#fff"}
         style={styles.icon}
       />
       <Text
         style={[
           styles.buttonText,
-          isDark ? styles.buttonTextDark : styles.buttonTextLight, // texto cambia según modo
+          isDark ? styles.buttonTextDark : styles.buttonTextLight,
         ]}
       >
         {title}
@@ -47,8 +46,21 @@ export default function Home({ navigation, route }: any) {
   );
 
   return (
-    <View style={[styles.container, isDark ? styles.darkBackground : styles.lightBackground]}>
+    <View
+      style={[
+        styles.container,
+        isDark ? styles.darkBackground : styles.lightBackground,
+      ]}
+    >
       <View style={styles.content}>
+        
+        {/* 🔹 Imagen arriba */}
+        <Image
+          source={require("../assents/images/logo_home.png")} // Ajusta la ruta según tu estructura
+          style={styles.logo}
+          resizeMode="contain"
+        />
+
         {/* 🔹 Saludo */}
         <Text style={[styles.text, isDark ? styles.darkText : styles.lightText]}>
           Bienvenido {correo}
@@ -56,7 +68,9 @@ export default function Home({ navigation, route }: any) {
 
         {/* 🔹 Switch de tema */}
         <View style={styles.switchContainer}>
-          <Text style={[styles.switchLabel, isDark ? styles.darkText : styles.lightText]}>
+          <Text
+            style={[styles.switchLabel, isDark ? styles.darkText : styles.lightText]}
+          >
             {isDark ? "Modo Oscuro" : "Modo Claro"}
           </Text>
           <Switch
@@ -70,11 +84,23 @@ export default function Home({ navigation, route }: any) {
         {/* 🔹 Botones */}
         <View style={styles.buttonContainer}>
           <View style={styles.row}>
-            <HomeButton title="Truck Location" onPress={handleTruck} icon="map-marker-truck" />
-            <HomeButton title="Truck Type" onPress={handleTruckType} icon="truck-outline" />
+            <HomeButton
+              title="Truck Location"
+              onPress={handleTruck}
+              icon="map-marker-truck"
+            />
+            <HomeButton
+              title="Truck Type"
+              onPress={handleTruckType}
+              icon="truck-outline"
+            />
           </View>
           <View style={styles.row}>
-            <HomeButton title="Register Truck" onPress={handleRegisterTruck} icon="plus-box" />
+            <HomeButton
+              title="Register Truck"
+              onPress={handleRegisterTruck}
+              icon="plus-box"
+            />
           </View>
         </View>
       </View>
@@ -85,9 +111,9 @@ export default function Home({ navigation, route }: any) {
 const styles = StyleSheet.create({
   container: { 
     flex: 1, 
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 20,
+  alignItems: "center",
+  paddingHorizontal: 20,
+  paddingTop: 40,
   },
 
   content: {
@@ -96,9 +122,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
+  logo: {
+    width: 350,   // Ajusta según tamaño
+    height: 100,
+    marginTop: 20,
+    marginBottom: 20,
+  },
+
   text: {
-    fontSize: 24,
-    fontWeight: "600",
+    fontSize: 18,
+    fontWeight: "500",
     marginBottom: 30,
     textAlign: "center",
   },

@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Image, Alert } from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
 import { useState, useCallback } from "react";
@@ -7,8 +7,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useTheme } from "../contexts/ThemeContext";  
 import auth from '@react-native-firebase/auth';
 import React from "react";
-import Icon from "react-native-vector-icons/Ionicons"; // 👈 Para el ícono de usuario y flecha
-import { Alert } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
 
 export default function Login({ navigation }: any) {
   const [email, setEmail] = useState("");
@@ -63,12 +62,18 @@ export default function Login({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      {/* Parte superior con fondo negro y el ícono */}
+      {/* Parte superior con fondo negro y la imagen */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Icon name="arrow-back" size={26} color="#fff" />
         </TouchableOpacity>
-        <Icon name="person-outline" size={80} color="#fff" style={styles.userIcon} />
+
+        {/* 👇 Logo desde assets */}
+        <Image 
+          source={require("../assents/images/logo_login.png")} 
+          style={styles.logo}
+          resizeMode="contain"
+        />
       </View>
 
       {/* Contenedor blanco */}
@@ -112,7 +117,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   header: {
-    backgroundColor: "#000",
+    backgroundColor: "#212020ff",
     height: 200,
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
@@ -125,7 +130,9 @@ const styles = StyleSheet.create({
     top: 40,
     left: 20,
   },
-  userIcon: {
+  logo: {
+    width: 120,   // Ajusta el tamaño a lo que se vea mejor
+    height: 150,
     marginTop: 20,
   },
   content: {
